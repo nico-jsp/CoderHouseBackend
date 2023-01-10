@@ -1,7 +1,6 @@
 // Hands on Lab
 
 class ProductManager {
-    #precioBaseDeGanancia = 0.20
 
     constructor() {
         this.products = [];
