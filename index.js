@@ -51,8 +51,10 @@ class ProductManager {
         if (producto != undefined) {
             return producto
 
-        } else return console.log('ERROR: Product Not Found') // Si no existe return "Not Found"
-
+        } else {
+            console.log('ERROR: Product Not Found') // Si no existe return "Not Found"
+            return [];
+        }
     }
 
     #createId() {
