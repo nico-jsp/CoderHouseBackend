@@ -90,7 +90,7 @@ class ProductManager {
 
     updateProduct(id, mods) {
         const productoModificado = this.getProductById(id)
-        // console.log(productoModificado)
+
         if (productoModificado) {
             if (mods.code) {
                 let existe = false
@@ -123,7 +123,7 @@ class ProductManager {
             if (mods.stock) {
                 productoModificado.stock = mods.stock
             }
-            // console.log(productoModificado)
+
             let productosModificados = []
             this.products.forEach(prod => {
                 if (prod.id != id) {
