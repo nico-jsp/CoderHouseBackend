@@ -35,6 +35,30 @@ socketClient.on('products', (products) => {
     parrafoProductos.innerHTML += productos
 })
 
+socketClient.on('newProductAdded', (prod) => {
+
+    let producto = ''
+    // parrafoProductos = ''
+    // products.forEach(prod => {
+
+    productos += `<div>
+        ------------------------------------</br>
+        Product: ${prod.title} </br>
+        Description: ${prod.description} </br>
+        Price: ${prod.price} </br>
+        Status: ${prod.status} </br>
+        Code: ${prod.code} </br>
+        Images: ${prod.thumbnail} </br>
+        Stock: ${prod.stock} </br>
+        Category: ${prod.category} </br>
+        ------------------------------------
+        </div>
+        `
+
+
+    parrafoProductos.innerHTML += producto
+})
+
 formulario.onsubmit = (e) => {
     e.preventDefault()
     const obj = {

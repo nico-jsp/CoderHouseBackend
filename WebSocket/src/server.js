@@ -7,9 +7,13 @@ import ProductManager from './ProductManager.js'
 // Inicializo los productos
 const productManager = new ProductManager()
 
+//importar los archivos de rutas
+import productosRouter from './routes/products.router.js'
+import carritosRouter from './routes/carts.router.js'
 
 const app = express()
 
+// comandos para que entienda el formato de info que le viene
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -26,10 +30,13 @@ app.set('views', __dirname + '/views')
 
 
 //ruta
-app.get('/realtimeproducts', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index')
 
 })
+
+app.use('/api/products', productosRouter)
+app.use('/api/carts', carritosRouter)
 
 
 

@@ -1,12 +1,13 @@
 // Hands on Lab
 
-const fs = require('fs');
+// const fs = require('fs');
+import fs from 'fs'
 // const { parse } = require('path');
 // const { stringify } = require('querystring');
-const path = './files/productosEnStock'
+const path = './files/productosEnStock.txt'
 
 
-class ProductManager {
+export default class ProductManager {
 
 
     constructor() {
@@ -76,7 +77,8 @@ class ProductManager {
 
         } else {
             console.log('ERROR: Product Not Found') // Si no existe return "Not Found"
-            return [];
+            // return [];
+            return 'El Producto No existe';
         }
     }
 
@@ -181,6 +183,6 @@ const productManager = new ProductManager()
 
 
 // productManager.deleteProduct(4)
-console.log(productManager.getProducts())
+// console.log(productManager.getProducts())
 
 // console.log(productManager.getProductById(2))
