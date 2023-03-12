@@ -50,7 +50,7 @@ router.put('/:cid', async (req, res) => {
 //Actualiza en 1 la cantidad de 1 producto X en un carrito X
 router.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params
-    const { cant } = req.body
+    const { cant = 1 } = req.body
     const cart = await cartManager.addProductToCart(cid, pid, cant)
     res.json({ cart: cart })
 

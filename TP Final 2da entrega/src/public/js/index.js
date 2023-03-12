@@ -27,7 +27,8 @@ socketClient.on('products', (products) => {
         Images: ${prod.thumbnail} </br>
         Stock: ${prod.stock} </br>
         Category: ${prod.category} </br>
-        <button onclick="href='http://localhost:8080/carts/640c64da42ec328aa651810e/products/${prod._id}'">Agregar al carrito</button>
+        <button type="PUT" onclick="location.href='http://localhost:8080/carts/640c64da42ec328aa651810e/products/${prod._id}'">Agregar al carrito</button>
+        <button onClick="fetch('http://localhost:8080/carts/640c64da42ec328aa651810e/products/${prod._id}', {method: 'PUT',body: JSON.stringify({cant: 1})})">Agregar 1 al carrito</button>
         ------------------------------------
         </div>
         `
