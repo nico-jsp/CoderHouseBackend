@@ -10,9 +10,7 @@ export default class ProductsManager {
             console.log(error)
         }
     }
-
-    async getProducts() {
-
+    async getAllProducts() {
         try {
             const productsDB = await productsModel.find()
             return productsDB
@@ -20,49 +18,46 @@ export default class ProductsManager {
             return error
         }
     }
-    async getProductsLimit(limit) {
 
+    async getProducts(limit, orderBy) {
+        // let { limit, orderBy } = params
+        console.log(limit)
+        console.log(orderBy)
         try {
-            const productsDB = await productsModel.aggregate([
-                {
-                    '$limit': parseInt(limit)
+            if ((limit !== undefined) || (orderBy !== undefined)) {
+                if (orderBy === undefined) {
+                    orderBy = 1
                 }
-            ])
-            console.log(productsDB)
-            console.log('imprimi los prooductos filtrados')
-            return productsDB
-        } catch (error) {
-            return error
-        }
-    }
-
-    async getProductsOrdered(orderBy) {
-
-        console.log(orderBy + ' aca se imprime')
-        // let order
-        // if (orderBy < 0) {
-        //     order = -1
-        // } else {
-        //     order = 1
-        // }
-        try {
-            const productsDB = await productsModel.aggregate([
-                {
-                    '$sort': {
-                        'price': parseInt(orderBy)
+                const productsDB = await productsModel.aggregate([
+                    {
+                        '$limit': parseInt(limit)
+                    },
+                    {
+                        '$sort': {
+                            'price': parseInt(orderBy)
+                        }
                     }
-                }
-            ])
-            console.log(productsDB)
-            console.log('imprimi los prooductos filtrados')
-            return productsDB
+                ])
+                return productsDB
+
+            } else {
+                const productsDB = await productsModel.find()
+                return productsDB
+
+            }
         } catch (error) {
             return error
         }
     }
 
+    async getPages(page, limit, sort, category) {
+        const productsDB = await productsModel.paginate({}, { limit, page })
+        // const productsDB = await productsModel.paginate({ category: category }, { limit, page })
 
+        console.log(productsDB);
+        return productsDB
 
+    }
 
     async getProductById(id) {
         try {
@@ -97,5 +92,20 @@ export default class ProductsManager {
         }
 
     }
+
+    async updateProduct(pid, mods) {
+        const { title, description, price, status, thumbnail, code, stock, category } = mods
+        try {
+            const product = await productsModel.findByIdAndUpdate(pid, mods)
+            return product
+        }
+        catch (error) {
+            console.log('hubo un error')
+            return {}
+        }
+    }
+
+
+
 
 }

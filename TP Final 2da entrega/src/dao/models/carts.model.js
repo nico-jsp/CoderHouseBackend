@@ -7,9 +7,17 @@ const cartsSchema = new mongoose.Schema({
     },
     products: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Products',
-            default: []
+            item: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Products',
+                default: []
+            }
+            ,
+            cant:
+            {
+                type: Number,
+                default: 0
+            }
         }
     ]
 })

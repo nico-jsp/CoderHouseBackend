@@ -12,60 +12,29 @@ const inputStock = document.getElementById('stock')
 const inputCategory = document.getElementById('category')
 
 socketClient.on('products', (products) => {
-    // console.log('aca estoy')
-    console.log(products)
-    console.log('aca estoy')
 
-    // let productos = ''
+    let productos = ''
     // parrafoProductos = ''
-    // products.forEach(prod => {
+    products.forEach(prod => {
+        console.log(prod)
+        productos += `<div>
+        ------------------------------------</br>
+        Product: ${prod.title} </br>
+        Description: ${prod.description} </br>
+        Price: ${prod.price} </br>
+        Status: ${prod.status} </br>
+        Code: ${prod.code} </br>
+        Images: ${prod.thumbnail} </br>
+        Stock: ${prod.stock} </br>
+        Category: ${prod.category} </br>
+        <button onclick="href='http://localhost:8080/carts/640c64da42ec328aa651810e/products/${prod._id}'">Agregar al carrito</button>
+        ------------------------------------
+        </div>
+        `
 
-    //     productos += `<div>
-    //     ------------------------------------</br>
-    //     Product: ${prod.title} </br>
-    //     Description: ${prod.description} </br>
-    //     Price: ${prod.price} </br>
-    //     Status: ${prod.status} </br>
-    //     Code: ${prod.code} </br>
-    //     Images: ${prod.thumbnail} </br>
-    //     Stock: ${prod.stock} </br>
-    //     Category: ${prod.category} </br>
-    //     ------------------------------------
-    //     </div>
-    //     `
-
-    // });
-    // parrafoProductos.innerHTML += productos
-})
-
-// socketClient.on('newProductAdded', (prod) => {
-//     console.log('llego a new product added')
-//     console.log(prod)
-//     // let producto = ''
-//     // // parrafoProductos = ''
-//     // // products.forEach(prod => {
-
-//     // productos += `<div>
-//     //     ------------------------------------</br>
-//     //     Product: ${prod.title} </br>
-//     //     Description: ${prod.description} </br>
-//     //     Price: ${prod.price} </br>
-//     //     Status: ${prod.status} </br>
-//     //     Code: ${prod.code} </br>
-//     //     Images: ${prod.thumbnail} </br>
-//     //     Stock: ${prod.stock} </br>
-//     //     Category: ${prod.category} </br>
-//     //     ------------------------------------
-//     //     </div>
-//     //     `
-
-
-//     // parrafoProductos.innerHTML += producto
-// })
-
-socketClient.on('errorToAddProduct', (prod) => {
-
-    console.log('error al intentar insertar el producto')
+    });
+    //No me funciona el boton agregar en el carrito
+    parrafoProductos.innerHTML += productos
 })
 
 formulario.onsubmit = (e) => {

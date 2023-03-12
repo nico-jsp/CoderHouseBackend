@@ -1,35 +1,33 @@
 import { Router } from "express";
-// import CartsManager from "../dao/filesManagers/cartsManager.js";
+import CartsManager from "../dao/mongoManagers/cartsManager.js";
+import ProductManager from "../dao/mongoManagers/productsManager.js";
 // import ProductManager from "../dao/filesManagers/ProductManager.js";
 
 const router = Router()
 
-// const cartManager = new CartsManager()
-// const productManager = new ProductManager()
+const cartManager = new CartsManager()
+const productManager = new ProductManager()
 
 
 router.get('/', async (req, res) => {
     const { limit } = req.query
     const carritos = await cartManager.getCarts()
-    if (limit > 0) {
-        const carritosLimit = carritos.slice(0, limit)
-        res.json({ carritos: carritosLimit })
-    } else {
-        res.json({ carritos: carritos })
+    res.status(200).json({ carritos: carritos })
 
-    }
+
 })
 
 router.get('/:cid', async (req, res) => {
 
     const { cid } = req.params
-    const cart = await cartManager.getCartById(JSON.parse(cid))
-    res.status(200).json({ "Productos del carrito seleccionado": cart.products })
+    const cart = await cartManager.getCartById(cid)
+    res.status(200).json({ "Productos del carrito seleccionado": cart })
 })
-
+//Crea un carrito vacio
 router.post('/', async (req, res) => {
-
-    let posted = await cartManager.addCart()
+    // const {newCarrito} = req.body
+    console.log(req.body);
+    let posted = await cartManager.addCart(req.body)
     console.log(posted)
     if (posted) {
         res.status(200).json({ message: 'Carrito agregado con exito' })
@@ -40,33 +38,39 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.post('/:cid/products/:pid', async (req, res) => {
-    //Agregar el ID del producto pid al arreglo de productos del carrito cid, y la cantidad quantity, de uno en uno, del mismo seleccionado.
-    // Si ya existe el producto, sumar a las cantidades
-    const { cid, pid } = req.params
-
-    let existeProducto = productManager.existStockOfProduct(JSON.parse(pid))
-    console.log(existeProducto)
-    if (!existeProducto) {
-        res.status(400).json({ message: 'No se pudo agregar al carrito, el producto no existe, o no tiene stock' })
-
-
-    } else {
-        let added = await cartManager.addProduct(JSON.parse(cid), JSON.parse(pid))
-        // console.log(added)
-        if (added) {
-            res.status(200).json({ message: 'Producto agregado al carrito con exito' })
-
-        } else {
-            res.status(400).json({ message: 'No se pudo agregar al carrito' })
-
-        }
-    }
-
-
+//Actualiza todo el carrito con el arreglo de productos {item, cant}
+router.put('/:cid', async (req, res) => {
+    const { cid } = req.params
+    const { productos } = req.body
+    const cart = await cartManager.addProducts(cid, productos)
+    res.json({ cart: cart })
 
 })
 
+//Actualiza en 1 la cantidad de 1 producto X en un carrito X
+router.put('/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params
+    const { cant } = req.body
+    const cart = await cartManager.addProductToCart(cid, pid, cant)
+    res.json({ cart: cart })
+
+})
+
+//Elimina un producto del carrito en su totalidad
+router.delete('/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params
+    const cart = await cartManager.deleteProductFromCart(cid, pid)
+    res.json({ cart: cart })
+
+})
+
+//Elimina todos los productos del carrito en su totalidad
+router.delete('/:cid', async (req, res) => {
+    const { cid } = req.params
+    const cart = await cartManager.deleteAllProductsFromCart(cid)
+    res.json({ cart: cart })
+
+})
 
 
 export default router

@@ -6,6 +6,7 @@ import viewsRouter from './routes/views.router.js'
 import usersRouter from './routes/users.router.js'
 import cartsRouter from './routes/carts.routes.js'
 import productosRouter from './routes/products.routes.js'
+import productsRouter from './routes/productsDisplay.routes.js'
 // import ProductManager from './dao/filesManagers/productManager.js'
 import ProductManager from './dao/mongoManagers/productsManager.js'
 
@@ -31,10 +32,11 @@ app.get('/', (req, res) => {
 })
 
 //routes
+app.use('/products', productsRouter)
 app.use('/api/products', productosRouter)
 app.use('/users', usersRouter)
 app.use('/views', viewsRouter)
-app.use('/carts', viewsRouter)
+app.use('/carts', cartsRouter)
 
 // motor de plantilla
 app.engine('handlebars', handlebars.engine())
@@ -52,8 +54,8 @@ const httpServer = app.listen(8080, () => {
 
 const socketServer = new Server(httpServer)
 
-socketServer.on('connection', (socket) => {
-    const products = productManager.getProducts()
+socketServer.on('connection', async (socket) => {
+    const products = await productManager.getAllProducts()
     console.log(`Usuario conectado`)
     console.log(socket.id)
     socket.emit('products', products)

@@ -1,5 +1,5 @@
 <h3>WEBSOCKET Carga de productos</h3>
-<form id="formulario-productos">
+{{!-- <form id="formulario-productos">
     Title: &emsp;&emsp;&emsp;&emsp;<input type="text" name="title" id="title">
     <br><br>
     Description: &emsp;<input type="text" name="description" id="description">
@@ -17,8 +17,10 @@
     Category: &emsp;&emsp; <input type="text" name="category" id="category">
     <br><br>
     <input type="submit" value="Add Product">
-</form>
+    <input type="button" value="Agregar al carrito">
+</form> --}}
 <p id="parrafoProductos"></p>
 
+
 <script src="/socket.io/socket.io.js"></script>
-<script src="../public/js/index.js"></script>
+<script type="module" src="./js/index.js"></script>
