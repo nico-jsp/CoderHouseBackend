@@ -20,6 +20,7 @@ export default class CartsManager {
         }
     }
 
+
     async getCartById(id) {
         try {
             const cart = await cartsModel.find({ _id: id }).populate()
@@ -30,6 +31,7 @@ export default class CartsManager {
     }
 
     async addProductToCart(cartId, productId, cant) {
+
         try {
             await cartsModel.updateOne({ "_id": cartId, "products.item": productId }, { $set: { "products.$.cant": cant } })
             const cart = cartsModel.findById(cartId)

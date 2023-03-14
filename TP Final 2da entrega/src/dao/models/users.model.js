@@ -19,7 +19,13 @@ const usersSchema = new mongoose.Schema({
         required: true,
         unique: true
 
-    }
+    },
+    password: {
+        type: String,
+        required: true,
+    },
 })
 
 export const usersModel = mongoose.model('Users', usersSchema)
+
+

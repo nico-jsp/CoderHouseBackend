@@ -253,8 +253,8 @@ router.get('/create', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-    const { limit, orderBy } = req.query
-    const productos = await productManager.getProducts(limit, orderBy)
+    const { limit = 10, order } = req.query
+    const productos = await productManager.getProducts(limit, order)
     res.json({ productos: productos })
 
 })

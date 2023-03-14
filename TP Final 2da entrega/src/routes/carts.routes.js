@@ -25,8 +25,8 @@ router.get('/:cid', async (req, res) => {
 })
 //Crea un carrito vacio
 router.post('/', async (req, res) => {
-    // const {newCarrito} = req.body
-    console.log(req.body);
+    const { newCarrito } = req.body
+    // console.log(req.body);
     let posted = await cartManager.addCart(req.body)
     console.log(posted)
     if (posted) {
@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
 router.put('/:cid', async (req, res) => {
     const { cid } = req.params
     const { productos } = req.body
+    console.log(productos);
     const cart = await cartManager.addProducts(cid, productos)
     res.json({ cart: cart })
 

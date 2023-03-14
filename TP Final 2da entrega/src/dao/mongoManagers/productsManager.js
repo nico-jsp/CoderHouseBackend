@@ -19,26 +19,43 @@ export default class ProductsManager {
         }
     }
 
-    async getProducts(limit, orderBy) {
+    async getProducts(limit, order) {
         // let { limit, orderBy } = params
         console.log(limit)
-        console.log(orderBy)
+        console.log(order)
+        let orderBy
+        if (order === "Asc") {
+            orderBy = 1
+        } else {
+            if (order === "Desc")
+                orderBy = -1
+
+        }
+
         try {
-            if ((limit !== undefined) || (orderBy !== undefined)) {
-                if (orderBy === undefined) {
-                    orderBy = 1
-                }
-                const productsDB = await productsModel.aggregate([
-                    {
-                        '$limit': parseInt(limit)
-                    },
-                    {
-                        '$sort': {
-                            'price': parseInt(orderBy)
+            if ((limit !== undefined) || (order !== undefined)) {
+                if (order === undefined) {
+                    const productsDB = await productsModel.aggregate([
+                        {
+                            '$limit': parseInt(limit)
                         }
-                    }
-                ])
-                return productsDB
+                    ])
+                    return productsDB
+
+                } else {
+                    const productsDB = await productsModel.aggregate([
+                        {
+                            '$limit': parseInt(limit)
+                        },
+                        {
+                            '$sort': {
+                                'price': parseInt(orderBy)
+                            }
+                        }
+                    ])
+                    return productsDB
+
+                }
 
             } else {
                 const productsDB = await productsModel.find()

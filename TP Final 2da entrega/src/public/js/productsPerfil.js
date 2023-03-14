@@ -1,4 +1,4 @@
-const socketClient = io()
+import ProductsManager from "../../dao/mongoManagers/productsManager"
 
 const formulario = document.getElementById('formulario-productos')
 const parrafoProductos = document.getElementById('parrafoProductos')
@@ -11,13 +11,15 @@ const inputCode = document.getElementById('code')
 const inputStock = document.getElementById('stock')
 const inputCategory = document.getElementById('category')
 
-socketClient.on('products', (products) => {
+const productManager = new ProductsManager()
 
-    let productos = ''
-    // parrafoProductos = ''
-    products.forEach(prod => {
-        console.log(prod)
-        productos += `<div>
+const products = productManager.getAllProducts()
+
+let productos = ''
+// parrafoProductos = ''
+products.forEach(prod => {
+    console.log(prod)
+    productos += `<div>
         ------------------------------------</br>
         Product: ${prod.title} </br>
         Description: ${prod.description} </br>
@@ -33,24 +35,7 @@ socketClient.on('products', (products) => {
         </div>
         `
 
-    });
-    //No me funciona el boton agregar en el carrito
-    parrafoProductos.innerHTML += productos
-})
+});
+//No me funciona el boton agregar en el carrito
+parrafoProductos.innerHTML += productos
 
-// formulario.onsubmit = (e) => {
-//     e.preventDefault()
-//     const obj = {
-//         title: inputTitle.value,
-//         description: inputDescription.value,
-//         price: inputPrice.value,
-//         status: inputStatus.value,
-//         code: inputCode.value,
-//         thumbnail: inputImages.value,
-//         stock: inputStock.value,
-//         category: inputCategory.value
-//     }
-//     console.log(obj)
-//     console.log('objecto enviado en el form')
-//     socketClient.emit('newProduct', (obj))
-// }
