@@ -27,7 +27,8 @@ router.get('/:cid', async (req, res) => {
 router.post('/', async (req, res) => {
     const { newCarrito } = req.body
     // console.log(req.body);
-    let posted = await cartManager.addCart(req.body)
+    // let posted = await cartManager.addCart(req.body)
+    let posted = await cartManager.addCart()
     console.log(posted)
     if (posted) {
         res.status(200).json({ message: 'Carrito agregado con exito' })

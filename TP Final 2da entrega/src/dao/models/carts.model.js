@@ -23,7 +23,7 @@ const cartsSchema = new mongoose.Schema({
 })
 
 cartsSchema.pre('find', function (next) {
-    this.populate('products')
+    this.populate('products._id')
     next()
 })
 

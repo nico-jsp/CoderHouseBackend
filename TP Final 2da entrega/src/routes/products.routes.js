@@ -253,11 +253,20 @@ router.get('/create', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
+
     const { limit = 10, order } = req.query
+
     const productos = await productManager.getProducts(limit, order)
+    // res.render('index', { productos })
     res.json({ productos: productos })
 
 })
+
+// router.get('/', async (req, res) => {
+//     const productos = await productManager.getAllProducts()
+//     res.render('index', { productos })
+
+// })
 
 router.get('/pages', async (req, res) => {
     const { page = 1, limit = 5, sort = 0, category } = req.query

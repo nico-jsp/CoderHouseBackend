@@ -11,15 +11,19 @@ export default class CartsManager {
         }
     }
 
-    async addCart(newCart) {
+    async addCart() {
+        const newCartId = await this.createId()
+        const newCart = {
+            "cartId": newCartId,
+            "products": []
+        }
         try {
-            const cart = await (await cartsModel.create(newCart)).populate()
+            const cart = await cartsModel.create(newCart)
             return cart
         } catch (error) {
             console.log(error)
         }
     }
-
 
     async getCartById(id) {
         try {
@@ -78,6 +82,15 @@ export default class CartsManager {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    async createId() {
+        let id = 1
+        const cart = await cartsModel.find()
+        if (cart.length !== 0) {
+            id = cart[cart.length - 1].cartId + 1
+        }
+        return id
     }
 
 }

@@ -19,7 +19,7 @@ GET
 Para el manejo de Carritos
 
 Para ver todos los carritos
-* GET http://localhost:8080/carts    // No me funciona el populate
+* GET http://localhost:8080/carts    // Arreglado, gracias!
 
 Para colocar un arreglo de items al carrito
 * PUT http://localhost:8080/carts/640f80f963939665c5f75f97
