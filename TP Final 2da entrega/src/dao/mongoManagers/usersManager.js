@@ -1,12 +1,16 @@
 import { usersModel } from '../models/users.model.js'
+import { hashPassword, comparePasswords } from '../../utils.js'
+
 
 export default class UsersManager {
     async createUser(user) {
-        const { email } = user
+        const { email, password } = user
         try {
             const existeUsuario = await usersModel.find({ email })
             if (existeUsuario.length === 0) {
-                const newUser = await usersModel.create(user)
+                const hashNewPassword = hashPassword(password)
+                const newUser = { ...user, password: hashNewPassword }
+                await usersModel.create(newUser)
                 return newUser
             } else {
                 return null
@@ -19,9 +23,14 @@ export default class UsersManager {
 
     async loginUser(user) {
         const { email, password } = user
-        const usuario = await usersModel.find({ email, password })
-        if (usuario.length !== 0) {
-            return usuario
+
+        const usuario = await usersModel.findOne({ email })
+        if (usuario) {
+            const isPassword = comparePasswords(password, usuario.password)
+            if (isPassword) {
+                return usuario
+
+            }
         } else {
             return null
         }

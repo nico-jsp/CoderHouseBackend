@@ -6,15 +6,18 @@ import viewsRouter from './routes/views.router.js'
 import usersRouter from './routes/users.router.js'
 import cartsRouter from './routes/carts.routes.js'
 import productosRouter from './routes/products.routes.js'
-import productsRouter from './routes/productsDisplay.routes.js'
+// import productsRouter from './routes/productsDisplay.routes.js'
 // import ProductManager from './dao/filesManagers/productManager.js'
 import ProductManager from './dao/mongoManagers/productsManager.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
+import passport from 'passport'
+import './dao/passport/passportStrategies.js'
 
 // import DBConfig
 import './dao/dbConfig.js'
+
 
 // Inicializo los productos
 const productManager = new ProductManager()
@@ -34,16 +37,21 @@ app.use(cookieParser(cookieKey))
 
 //Mongo Session
 app.use(session({
-    secret: 'sessionKey',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1200000 },
     store: new mongoStore({
         mongoUrl: 'mongodb+srv://mongo-user:mongoUserUse@cluster-dockertest.vsna5.mongodb.net/?retryWrites=true&w=majority'
 
-    })
+    }),
+    secret: 'sessionKey',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1200000 }
 }))
 
+
+// motor de plantilla
+app.engine('handlebars', handlebars.engine())
+app.set('views', __dirname + '/views')
+app.set('view engine', 'handlebars')
 
 
 //ruta
@@ -53,19 +61,17 @@ app.get('/', (req, res) => {
 })
 
 //routes
-app.use('/products', productsRouter)
+// app.use('/products', productsRouter)
 app.use('/api/products', productosRouter)
 app.use('/users', usersRouter)
 app.use('/views', viewsRouter)
 app.use('/carts', cartsRouter)
 
-
-// motor de plantilla
-app.engine('handlebars', handlebars.engine())
-app.set('views', __dirname + '/views')
-app.set('view engine', 'handlebars')
-
-
+//passport
+// inicializar passport
+app.use(passport.initialize())
+//passport va a guardar en las session
+app.use(passport.session())
 
 const httpServer = app.listen(8080, () => {
     console.log('Escuchando al puerto 8080')
