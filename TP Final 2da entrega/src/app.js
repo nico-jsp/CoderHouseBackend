@@ -13,11 +13,12 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
 import passport from 'passport'
-import './dao/passport/passportStrategies.js'
 
 // import DBConfig
-import './dao/dbConfig.js'
+import './dbConfig.js'
 
+//import passportStrategies
+import './dao/passport/passportStrategies.js'
 
 // Inicializo los productos
 const productManager = new ProductManager()

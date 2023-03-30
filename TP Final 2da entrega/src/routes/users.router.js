@@ -59,8 +59,10 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/registroGithub', passport.authenticate('github', { scope: ['user:email'] }))
+
 router.get('/github', passport.authenticate('github'), (req, res) => {
-    console.log(req);
+    // console.log(req);
+    req.session.email = req.user.email
     res.redirect('/views/perfil')
 })
 

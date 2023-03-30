@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { hashPassword } from '../../utils.js';
+import { comparePasswords, hashPassword } from '../../utils.js';
 import { usersModel } from "../models/users.model.js";
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GithubStrategy } from 'passport-github2';
@@ -16,16 +16,22 @@ passport.use('registro', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 }, async (req, email, password, done) => {
-    const user = await usersModel.findOne({ email })
-    if (user) {
-        return done(null, false)
+
+    try {
+        const user = await usersModel.findOne({ email })
+        if (user) {
+            return done(null, false)
+        }
+        const hashNewPassword = await hashPassword(password)
+        const newUser = { ...req.body, password: hashNewPassword }
+        // console.log(newUser)
+        const newUserBD = await usersModel.create(newUser)
+        // console.log(newUserBD)
+        done(null, newUserBD)
+
+    } catch (error) {
+        done(error)
     }
-    const hashNewPassword = await hashPassword(password)
-    const newUser = { ...req.body, password: hashNewPassword }
-    // console.log(newUser)
-    const newUserBD = await usersModel.create(newUser)
-    // console.log(newUserBD)
-    done(null, newUserBD)
 }))
 
 //github strategy
@@ -53,15 +59,44 @@ passport.use('github', new GithubStrategy({
     done(null, true)
 }))
 
+passport.use('login', new LocalStrategy({
+    usernameField: 'email',
+    passReqToCallback: true
+},
+    async (req, email, password, done) => {
+        try {
+            const userDB = await usersModel.findOne({ email })
+            if (!userDB) return done(null, false)
+            const comparePasswords = await comparePasswords(password, userDB.password)
+            if (!comparePasswords) return done(null, false)
+            done(null, userDB)
+        } catch (error) {
+            done(error)
+
+        }
+    }
+
+))
+
 
 //Estas dos funciones se pasan SIEMPRE a passport
-passport.serializeUser((user, done) => {
+passport.serializeUser(async (user, done) => {
+    // console.log('aqui imprimi el user');
+    console.log(user);
+    // console.log('aqui imprimi el user');
     done(null, user._id)
 })
 
 passport.deserializeUser(async (id, done) => {
-    const user = await usersModel.findById(id)
-    done(null, user)
+    try {
+        const user = await usersModel.findById(id)
+        // console.log('imprimo el usuario en el deserialize');
+        // console.log(user)
+        done(null, user)
+
+    } catch (error) {
+        done(error)
+    }
 })
 
 
