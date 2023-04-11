@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import ProductManager from "../dao/mongoManagers/productsManager.js";
+import ProductManager from "../persistence/dao/mongoManagers/productsManager.js";
 
 const productManager = new ProductManager()
 
@@ -33,6 +33,10 @@ router.get('/admin', async (req, res) => {
 
     const { firstName } = req.session
     res.render('admin', { firstName, productos })
+})
+
+router.get('/jwtFront', (req, res) => {
+    res.render('jwt')
 })
 
 export default router

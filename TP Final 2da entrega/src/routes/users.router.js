@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import UsersManager from '../dao/mongoManagers/usersManager.js'
+import UsersManager from '../persistence/dao/mongoManagers/usersManager.js'
 
 const router = Router()
 const usersManager = new UsersManager()
@@ -63,6 +63,8 @@ router.get('/registroGithub', passport.authenticate('github', { scope: ['user:em
 router.get('/github', passport.authenticate('github'), (req, res) => {
     // console.log(req);
     req.session.email = req.user.email
+    req.session.firstName = req.user.firstName
+    req.session.admin = false
     res.redirect('/views/perfil')
 })
 
