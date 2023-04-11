@@ -60,3 +60,26 @@ PUT
 
 
 * DELETE http://localhost:8080/carts/640c64da42ec328aa651810e   - Esto borra todos los productos del carrito, vacia el carrito
+
+
+Para JWT utilizamos la ruta /jwt
+
+Logearse al siguiente link:
+POST: http://localhost:8080/jwt/login
+
+Body: 
+{
+"email": "nicosca@gmail.com",
+"password": "12345"
+}
+
+Devuelve el token
+
+Para verificar:
+
+GET http://localhost:8080/jwt/login
+
+Header
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MzU0ZGQyYWQ4MDZjMzM2N2UzZGZlYiIsImZpcnN0TmFtZSI6Ik5pY28iLCJsYXN0TmFtZSI6IlNjYSIsImVtYWlsIjoibmljb3NjYUBnbWFpbC5jb20iLCJkbmkiOjMyNzMzMTk4LCJwYXNzd29yZCI6IiQyYiQxMCRDR0c3RWExQXVvZVUwUksxbzhmVHBlMHdCY2JXczFzakh1cDQwRlREanYuZkpTREwvUG56MiIsIl9fdiI6MH0sImlhdCI6MTY4MTIxNjQwNywiZXhwIjoxNjgxMjIwMDA3fQ.GyTk1PtZVlE2lZDK2A9cp_HAwh_lVsHhjO7eQZJoC2g
+
+Luego se puede probar que el token valido con el boton PROBAR en el jwt.handlebars

@@ -8,23 +8,24 @@ import cartsRouter from './routes/carts.routes.js'
 import productosRouter from './routes/products.routes.js'
 // import productsRouter from './routes/productsDisplay.routes.js'
 // import ProductManager from './dao/filesManagers/productManager.js'
-import ProductManager from './dao/mongoManagers/productsManager.js'
+import ProductManager from './persistence/dao/mongoManagers/productsManager.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
 import passport from 'passport'
+import jwtRouter from './routes/jwt.router.js'
 
 // import DBConfig
 import './dbConfig.js'
 
 //import passportStrategies
-import './dao/passport/passportStrategies.js'
+import './persistence/dao/passport/passportStrategies.js'
 
 // Inicializo los productos
 const productManager = new ProductManager()
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -67,6 +68,7 @@ app.use('/api/products', productosRouter)
 app.use('/users', usersRouter)
 app.use('/views', viewsRouter)
 app.use('/carts', cartsRouter)
+app.use('/jwt', jwtRouter)
 
 //passport
 // inicializar passport
